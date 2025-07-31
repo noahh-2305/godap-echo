@@ -1,0 +1,19 @@
+# Ignore everything
+**
+*-venv
+*.ipynb
+
+# Except these:
+!Dockerfile
+!triggers/
+!triggers/**
+!tags/
+!.env
+!tags/**
+!packages
+!packages/
+!start.sh
+!llm/
+!llm/** */
+!requirements.txt
+!download_wheels.sh
