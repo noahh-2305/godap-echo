@@ -1,0 +1,6 @@
+psycopg2-binary
+loguru
+tqdm
+spacy
+better_profanity
+transformers==4.37.2
