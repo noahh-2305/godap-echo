@@ -1,0 +1,90 @@
+version: '3.8'
+
+services:
+  godap_trigger_population:
+    image: ${APP_REGISTRY_HOST}/trig-pop:${APP_VERSION_TAG_TRIG}
+    environment:
+      - GODAP_DEPLOYMENT_MODE=production
+      - GODAP_WRITE_MODE=read-write
+      - PGUSER=$PGUSER
+      - PGPASSWORD=$PGPASSWORD
+      - PGNAME=$PGNAME
+      - PGHOST=$PGHOST
+      - PGPORT=5432
+    volumes:
+      - data030:/data030
+      - godap_trigger_deps:/app/packages
+      - godap_models:/app/models
+    network_mode: "host"
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  godap_tag_population:
+    image: ${APP_REGISTRY_HOST}/tag-pop:${APP_VERSION_TAG_TAG}
+    environment:
+      - GODAP_DEPLOYMENT_MODE=production
+      - GODAP_WRITE_MODE=read-write
+      - PGUSER=$PGUSER
+      - PGPASSWORD=$PGPASSWORD
+      - PGNAME=$PGNAME
+      - PGHOST=$PGHOST
+      - PGPORT=5432
+    volumes:
+      - data030:/data030
+    network_mode: "host"
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  godap_classifier_cleaning:
+    image: ${APP_REGISTRY_HOST}/echo-classifier:${APP_VERSION_TAG_CLASSIFIER}
+    environment:
+      - GODAP_DEPLOYMENT_MODE=production
+      - GODAP_WRITE_MODE=read-write
+      - PGUSER=$PGUSER
+      - PGPASSWORD=$PGPASSWORD
+      - PGNAME=$PGNAME
+      - PGHOST=$PGHOST
+      - PGPORT=5432
+    volumes:
+      - data030:/data030
+      - godap_models:/app/models
+      - godap_classifier_deps:/app/packages
+    network_mode: "host"
+    deploy:
+      mode: replicated
+      replicas: 1
+
+    networks:
+      - godap_overlay
+
+volumes:
+  data030:
+    driver_opts:
+      type: cifs
+      device: //stnafcvdo030.us164.corpintra.net/ntm
+      o: addr=stnafcvdo030.us164.corpintra.net,domain=AMERICAS,username=dtna_cvd_s_datamine,password=Freightliner-33120248,uid=0,gid=0,file_mode=0750,dir_mode=0750
+  
+  godap_trigger_deps:
+    driver_opts:
+      type: cifs
+      device: //stnafcvdo030.us164.corpintra.net/ntm/GoDAP_Echo_Model/table_populate_packages
+      o: addr=stnafcvdo030.us164.corpintra.net,domain=AMERICAS,username=dtna_cvd_s_datamine,password=Freightliner-33120248,uid=0,gid=0,file_mode=0750,dir_mode=0750
+
+  godap_models:
+    driver_opts:
+      type: cifs
+      device: //stnafcvdo030.us164.corpintra.net/ntm/GoDAP_Echo_Model/models
+      o: addr=stnafcvdo030.us164.corpintra.net,domain=AMERICAS,username=dtna_cvd_s_datamine,password=Freightliner-33120248,uid=0,gid=0,file_mode=0750,dir_mode=0750
+
+  godap_classifier_deps:
+    driver_opts:
+      type: cifs
+      device: //stnafcvdo030.us164.corpintra.net/ntm/GoDAP_Echo_Model/classifier_packages
+      o: addr=stnafcvdo030.us164.corpintra.net,domain=AMERICAS,username=dtna_cvd_s_datamine,password=Freightliner-33120248,uid=0,gid=0,file_mode=0750,dir_mode=0750
+      
+networks:
+  godap_overlay:
+    driver: overlay
+    attachable: true
