@@ -86,7 +86,7 @@ Simply remove the databucketid from data.trigger_jobqueue and a series of cascad
     - Theoretically, the code should run indefinitely.
 
 **echo-classifier.py**
-- This is the final script in the sequence (found in the llm folder), which cleans the transcriptions, removing any names, censoring certain words, and utilizes a custom classifier model trained on 300+ transcriptions.
+- This is the final script in the sequence (found in the classifier folder), which cleans the transcriptions, removing any names, censoring certain words, and utilizes a custom classifier model trained on 300+ transcriptions.
   - The actual algorithm of this script runs on an hourly basis to check for newly tagged triggers ready to be cleaned.
 - Warning: This script notoriously had long image build and upload times from VSCode to Artifactory. To solve this, I opted for an alternative solution to the heavy library download process:
   - On the 030 network drive, please consult the `\GoDAP_Echo_Model\classifier_packages` folder to find the necessary .whl files and compressed .tar folders used for the script's libraries
