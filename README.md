@@ -9,20 +9,20 @@ Created by Noah Hickman.
 - Voice Transcription
   - Utilizes Whisper by OpenAI (large-v3 OR medium model) and WhisperX (speaker diarization) libraries for accurate speech transcription
   - Allows for transcription of voice triggers from databucket trigger packages
-  - Transcriptions to be tagged and utilized on GoDAP website, to allow easier searching and storing of triggers
+  - Transcriptions to be tagged and utilized on the GoDAP website, to allow easier searching and storing of triggers
 - Audio Detection
   - Utilizes Librosa library
   - Turns sound inputs into audio time series, short-time fourier transforms (STFT), and can detect noises within a certain frequency range over a specific volume
-  - Allows for detection of different optical acoustic warnings (OAWs), which can be marked as searchable tags on the GoDAP website
+  - Allows for the detection of different optical acoustic warnings (OAWs), which can be marked as searchable tags on the GoDAP website
   - (Disclaimer: Need audio files from each feature owner/department to make this work)
 - Localized classifier model for transcription cleaning
-  - Uses a custom trained DistiliBERT classifier model to filter out summaries that aren't relevant information to the trigger
+  - Uses a custom-trained DistilBERT classifier model to filter out summaries that aren't relevant to the trigger
   - Quickly retrainable and adaptable, making it more accurate as you use it
-  - Currently has pre-processing of spacy and better-profanity libraries to censor and change names prior to filtering
+  - Currently has pre-processing of Spacy and better-profanity libraries to censor and change names prior to filtering
 
 ## Getting Started
 
-All of this code is ran in Python. There is also a postgreSQL backend (`data.trigger`, `data.tags`, and `data.trigger_jobqueue` tables) within the ntm database, data schema.
+All of this code is ran in Python. There is also a PostgreSQL backend (`data.trigger`, `data.tags`, and `data.trigger_jobqueue` tables) within the ntm database, data schema.
 Please see the "creatingdbtables.txt" file to see the breakdown of each table.
 
 ### Table Structure Breakdown
